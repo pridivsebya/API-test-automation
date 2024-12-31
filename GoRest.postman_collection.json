@@ -1,0 +1,2931 @@
+{
+	"info": {
+		"_postman_id": "ebac1b1d-cbc6-4291-9dd9-01f7024190e2",
+		"name": "GoRest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37975098"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "создать нового допустимого пользователя",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const gender = ['male', 'female']\r",
+									"function getRandomElement(arr) {\r",
+									"    return arr[Math.floor(Math.random() * arr.length)];\r",
+									"}\r",
+									"var randomGender = getRandomElement(gender);\r",
+									"pm.variables.set('randomGender', randomGender);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 201) {\r",
+									"        pm.expect(StatusCode).to.eql(201, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 201.\");\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"id\", pm.response.json().id);\r",
+									"pm.collectionVariables.set(\"name\", pm.response.json().name);\r",
+									"pm.collectionVariables.set(\"email\", pm.response.json().email);\r",
+									"pm.collectionVariables.set(\"gender\", pm.response.json().gender);\r",
+									"pm.collectionVariables.set(\"status\", pm.response.json().status);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"gender\": \"{{randomGender}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_users}}",
+							"host": [
+								"{{url_users}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать недопустимого пользователя",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const gender = ['male', 'female']\r",
+									"function getRandomElement(arr) {\r",
+									"    return arr[Math.floor(Math.random() * arr.length)];\r",
+									"}\r",
+									"var randomGender = getRandomElement(gender);\r",
+									"pm.variables.set('randomGender', randomGender);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"gender\": \"{{randomGender}}\",\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_users}}",
+							"host": [
+								"{{url_users}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать существующего пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"name\": \"{{name}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"gender\": \"{{gender}}\",\r\n    \"status\": \"{{status}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_users}}",
+							"host": [
+								"{{url_users}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить список всех пользователей",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_users}}",
+							"host": [
+								"{{url_users}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить созданного пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_users}}/{{id}}",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить недоступного пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_users}}?id=0",
+							"host": [
+								"{{url_users}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "внести изменение в созданного пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"gender\": \"{{gender}}\",\r\n    \"email\": \"{{$randomEmail}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_users}}/{{id}}",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "внести изменения в несуществующего пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 404) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 404.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_users}}/..",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								".."
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "posts",
+			"item": [
+				{
+					"name": "создать публикацию от существующего пользователя с валидным телом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 201) {\r",
+									"        pm.expect(StatusCode).to.eql(201, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 201.\");\r",
+									"    }\r",
+									"});\r",
+									"pm.collectionVariables.set(\"idPost\", pm.response.json().id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"{{$randomLoremSentence}}\",\r\n    \"body\":\"{{$randomLoremSentences}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_users}}/{{id}}/{{posts}}",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"{{id}}",
+								"{{posts}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать публикацию от существующего пользователя с пустыми полями",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"\",\r\n    \"body\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_users}}/{{id}}/{{posts}}",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"{{id}}",
+								"{{posts}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать публикацию от существующего пользователя без тела",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url_users}}/{{id}}/{{posts}}",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"{{id}}",
+								"{{posts}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать публикацию от несуществующего пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url_users}}/0/{{posts}}",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"0",
+								"{{posts}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить все публикации пользователей",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_post}}",
+							"host": [
+								"{{url_post}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить публикации определенного пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_users}}/{{id}}/{{posts}}",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"{{id}}",
+								"{{posts}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить определенную публикацию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_post}}/{{idPost}}",
+							"host": [
+								"{{url_post}}"
+							],
+							"path": [
+								"{{idPost}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить несуществующую публикацию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 404) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 404.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_post}}/..",
+							"host": [
+								"{{url_post}}"
+							],
+							"path": [
+								".."
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить пользователя, у которого нет публикаций",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_users}}/5/{{posts}}",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"5",
+								"{{posts}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить публикации несуществующего пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 404) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 404.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_users}}/../{{posts}}",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"..",
+								"{{posts}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "изменить публикацию пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"{{$randomLoremSentence}}\",\r\n    \"body\":\"{{$randomLoremSentences}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_post}}/{{idPost}}",
+							"host": [
+								"{{url_post}}"
+							],
+							"path": [
+								"{{idPost}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "изменить несуществующую публикацию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 404) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 404.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"{{$randomLoremSentence}}\",\r\n    \"body\":\"{{$randomLoremSentences}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_post}}/..",
+							"host": [
+								"{{url_post}}"
+							],
+							"path": [
+								".."
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "изменить публикацию пользователя с пустыми полями",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"\",\r\n    \"body\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_post}}/{{idPost}}",
+							"host": [
+								"{{url_post}}"
+							],
+							"path": [
+								"{{idPost}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "изменить публикацию пользователя без тела",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url_post}}/{{idPost}}",
+							"host": [
+								"{{url_post}}"
+							],
+							"path": [
+								"{{idPost}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"item": [
+				{
+					"name": "создать новый комментарий под существующей публикацией",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 201) {\r",
+									"        pm.expect(StatusCode).to.eql(201, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 201.\");\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"idComm\", pm.response.json().id);\r",
+									"pm.collectionVariables.set(\"nameComm\", pm.response.json().name);\r",
+									"pm.collectionVariables.set(\"emailComm\", pm.response.json().email);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"post_id\": \"{{idPost}}\",\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"body\": \"{{$randomLoremSentence}}\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_comm}}",
+							"host": [
+								"{{url_comm}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать комментарий под несуществующей публикацией",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"post_id\": \"0\",\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"body\": \"{{$randomLoremSentence}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_comm}}",
+							"host": [
+								"{{url_comm}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать новый комментарий под существующей публикацией без имени",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"post_id\": \"{{idPost}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"body\": \"{{$randomLoremSentence}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_comm}}",
+							"host": [
+								"{{url_comm}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать новый комментарий под существующей публикацией без почты",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"post_id\": \"{{idPost}}\",\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"body\": \"{{$randomLoremSentence}}\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_comm}}",
+							"host": [
+								"{{url_comm}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать новый комментарий под существующей публикацией без тела комментария",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"post_id\": \"{{idPost}}\",\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_comm}}",
+							"host": [
+								"{{url_comm}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать новый комментарий под существующей публикацией c пустым телом комментария",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"post_id\": \"{{idPost}}\",\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"body\": \"\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_comm}}",
+							"host": [
+								"{{url_comm}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать новый комментарий под существующей публикацией c пустым телом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_comm}}",
+							"host": [
+								"{{url_comm}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить все комментарии определенного пользователя с помощью имени",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_comm}}?name={{nameComm}}",
+							"host": [
+								"{{url_comm}}"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{nameComm}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить все комментарии определенного пользователя с помощью почты",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_comm}}?email={{emailComm}}",
+							"host": [
+								"{{url_comm}}"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "{{emailComm}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить все комментарии под определенным постом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_comm}}?post_id={{idPost}}",
+							"host": [
+								"{{url_comm}}"
+							],
+							"query": [
+								{
+									"key": "post_id",
+									"value": "{{idPost}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить существующий комментарий c помощью id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_comm}}?id={{idComm}}",
+							"host": [
+								"{{url_comm}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{idComm}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "изменить тело существующего комментария",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{nameComm}}\",\r\n    \"email\": \"{{emailComm}}\",\r\n    \"body\": \"{{$randomLoremSentence}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_comm}}/{{idComm}}",
+							"host": [
+								"{{url_comm}}"
+							],
+							"path": [
+								"{{idComm}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "полностью изменить данные пользователя и комментарий",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"post_id\": \"{{idPost}}\",\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"body\": \"{{$randomLoremSentence}}\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_comm}}/{{idComm}}",
+							"host": [
+								"{{url_comm}}"
+							],
+							"path": [
+								"{{idComm}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "todos",
+			"item": [
+				{
+					"name": "создать новую задачу пользователя",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const status = ['completed', 'pending']\r",
+									"function getRandomElement(arr) {\r",
+									"    return arr[Math.floor(Math.random() * arr.length)];\r",
+									"}\r",
+									"var randomStatus = getRandomElement(status);\r",
+									"pm.variables.set('randomStatus', randomStatus);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 201) {\r",
+									"        pm.expect(StatusCode).to.eql(201, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 201.\");\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"idTodos\", pm.response.json().id);\r",
+									"pm.collectionVariables.set(\"dueOn\", pm.response.json().due_on);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"{{id}}\",\r\n    \"title\": \"{{$randomLoremSentence}}\",\r\n    \"status\": \"{{randomStatus}}\",\r\n    \"due_on\": \"{{$isoTimestamp}}\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_todos}}",
+							"host": [
+								"{{url_todos}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать задачу с пустыми полями",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"{{id}}\",\r\n    \"title\": \"\",\r\n    \"status\": \"\",\r\n    \"due_on\": \"\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_todos}}",
+							"host": [
+								"{{url_todos}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать задачу с пустым телом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url_todos}}",
+							"host": [
+								"{{url_todos}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "создать задачу с несуществующего пользователя",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const status = ['completed', 'pending']\r",
+									"function getRandomElement(arr) {\r",
+									"    return arr[Math.floor(Math.random() * arr.length)];\r",
+									"}\r",
+									"var randomStatus = getRandomElement(status);\r",
+									"pm.variables.set('randomStatus', randomStatus)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {\r",
+									"  pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 422) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 422.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"0\",\r\n    \"title\": \"{{$randomLoremSentence}}\",\r\n    \"status\": \"{{randomStatus}}\",\r\n    \"due_on\": \"{{$isoTimestamp}}\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_todos}}",
+							"host": [
+								"{{url_todos}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить список всех задач",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_todos}}",
+							"host": [
+								"{{url_todos}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить определенную задачу",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_todos}}/{{idTodos}}",
+							"host": [
+								"{{url_todos}}"
+							],
+							"path": [
+								"{{idTodos}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получить несуществующую задачу",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_todos}}?id=0",
+							"host": [
+								"{{url_todos}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "внести изменения в задачу",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"{{id}}\",\r\n    \"due_on\": \"{{$isoTimestamp}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_todos}}/{{idTodos}}",
+							"host": [
+								"{{url_todos}}"
+							],
+							"path": [
+								"{{idTodos}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "полностью изменить задачу",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 200) {\r",
+									"        pm.expect(StatusCode).to.eql(200, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 200.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"{{id}}\",\r\n    \"title\": \"{{$randomLoremSentence}}\",\r\n    \"status\": \"{{randomStatus}}\",\r\n    \"due_on\": \"{{$isoTimestamp}}\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_todos}}/{{idTodos}}",
+							"host": [
+								"{{url_todos}}"
+							],
+							"path": [
+								"{{idTodos}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"const status = ['completed', 'pending']\r",
+							"function getRandomElement(arr) {\r",
+							"    return arr[Math.floor(Math.random() * arr.length)];\r",
+							"}\r",
+							"var randomStatus = getRandomElement(status);\r",
+							"pm.variables.set('randomStatus', randomStatus)"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "delete",
+			"item": [
+				{
+					"name": "удалить существующий комментарий",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"  pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 204) {\r",
+									"        pm.expect(StatusCode).to.eql(204, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 204.\");\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_comm}}/{{idComm}}",
+							"host": [
+								"{{url_comm}}"
+							],
+							"path": [
+								"{{idComm}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "удалить несуществующий комментарий",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 404) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 404.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_comm}}/0",
+							"host": [
+								"{{url_comm}}"
+							],
+							"path": [
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "удалить существующую публикацию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"  pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 204) {\r",
+									"        pm.expect(StatusCode).to.eql(204, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 204.\");\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_post}}/{{idPost}}",
+							"host": [
+								"{{url_post}}"
+							],
+							"path": [
+								"{{idPost}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "удалить несуществующую публикацию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 404) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 404.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_post}}/.",
+							"host": [
+								"{{url_post}}"
+							],
+							"path": [
+								"."
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "удалить существующую задачу",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"  pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 204) {\r",
+									"        pm.expect(StatusCode).to.eql(204, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 204.\");\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_todos}}/{{idTodos}}",
+							"host": [
+								"{{url_todos}}"
+							],
+							"path": [
+								"{{idTodos}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "удалить несуществующую задачу",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 404) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 404.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_todos}}/0",
+							"host": [
+								"{{url_todos}}"
+							],
+							"path": [
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "удалить существующего пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"  pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode === 204) {\r",
+									"        pm.expect(StatusCode).to.eql(204, \"Valid status code: \" + StatusCode + \". The response is correct.\");\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 204.\");\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_users}}/{{id}}",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "удалить несуществующего пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No validate response\", function () {\r",
+									"    var StatusCode = pm.response.code;\r",
+									"    if (StatusCode !== 404) {\r",
+									"        pm.expect.fail(\"Unexpected status code: \" + StatusCode + \". Expected: 404.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_users}}/0",
+							"host": [
+								"{{url_users}}"
+							],
+							"path": [
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://gorest.co.in/public/v2",
+			"type": "default"
+		},
+		{
+			"key": "token",
+			"value": "848e4fe6e2007dc61461f80c925f3e512e60e3fe22d62af36baca27d3c01169c",
+			"type": "default"
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "name",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "gender",
+			"value": ""
+		},
+		{
+			"key": "status",
+			"value": ""
+		},
+		{
+			"key": "url_users",
+			"value": "https://gorest.co.in/public/v2/users",
+			"type": "default"
+		},
+		{
+			"key": "posts",
+			"value": "posts",
+			"type": "default"
+		},
+		{
+			"key": "url_post",
+			"value": "https://gorest.co.in/public/v2/posts",
+			"type": "default"
+		},
+		{
+			"key": "idPost",
+			"value": ""
+		},
+		{
+			"key": "url_comm",
+			"value": "https://gorest.co.in/public/v2/comments",
+			"type": "default"
+		},
+		{
+			"key": "idComm",
+			"value": ""
+		},
+		{
+			"key": "nameComm",
+			"value": ""
+		},
+		{
+			"key": "emailComm",
+			"value": ""
+		},
+		{
+			"key": "url_todos",
+			"value": "https://gorest.co.in/public/v2/todos",
+			"type": "default"
+		},
+		{
+			"key": "idTodos",
+			"value": ""
+		},
+		{
+			"key": "dueOn",
+			"value": ""
+		}
+	]
+}
